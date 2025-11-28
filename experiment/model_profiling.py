@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Iterable, List, Tuple
+from typing import Callable, Iterable, List, Optional, Tuple
 
 import torch
 from thop import profile
@@ -127,7 +127,9 @@ def _profile_model(spec: ModelSpec, device: str, img_size: Tuple[int, int]) -> T
     return params_m, flops_b
 
 
-def run(models: List[str], device: str, override_size: int | None) -> List[Tuple[str, float, float]]:
+def run(
+    models: List[str], device: str, override_size: Optional[int]
+) -> List[Tuple[str, float, float]]:
     lookup = {spec.name.lower(): spec for spec in MODEL_SPECS}
     selected_specs = MODEL_SPECS if "all" in models else [lookup[m.lower()] for m in models]
 

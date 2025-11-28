@@ -4,7 +4,7 @@
 
 ## 环境准备
 
-1. 建议使用 Python 3.10+。
+1. 建议使用 Python 3.10+；脚本已兼容 Python 3.9.21（移除了仅在 3.10 才支持的 `|` 类型并改用 `Optional`）。
 2. 安装依赖（包含 PyTorch、TorchVision、Ultralytics 及 FLOPs 计算库 `thop`）：
 
    ```bash
