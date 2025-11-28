@@ -59,6 +59,8 @@ python model_profiling.py --help
 - **Faster R-CNN**：使用 `torchvision` 自带的 `FasterRCNN_ResNet50_FPN_Weights.DEFAULT` 预训练权重。
 - **SSD-MobileNetV3-L**：使用 `SSDLite320_MobileNet_V3_Large_Weights.DEFAULT` 预训练权重。
 
+> 提示：`torchvision` 的检测模型（如 Faster R-CNN、SSD）在推理与 FLOPs 统计时需要输入为形如 `[C, H, W]` 的单张图像列表，脚本已按此格式构造假输入，避免出现 "images is expected to be a list of 3d tensors" 的报错。
+
 > FLOPs 由 `thop` 返回的 MACs 直接换算为 FLOPs（单位：B），适合作为跨模型的相对对比指标。
 
 ## 输出格式示例

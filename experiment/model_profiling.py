@@ -116,8 +116,12 @@ def _profile_model(spec: ModelSpec, device: str, img_size: Tuple[int, int]) -> T
     model = spec.builder(spec.weight, device)
     model.eval()
 
-    dummy = torch.randn(1, 3, img_size[0], img_size[1], device=device)
-    inputs = ([dummy],) if spec.expects_list_inputs else (dummy,)
+    if spec.expects_list_inputs:
+        dummy = torch.randn(3, img_size[0], img_size[1], device=device)
+        inputs = ([dummy],)
+    else:
+        dummy = torch.randn(1, 3, img_size[0], img_size[1], device=device)
+        inputs = (dummy,)
 
     with torch.no_grad():
         macs, params = profile(model, inputs=inputs, verbose=False)
