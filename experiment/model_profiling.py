@@ -30,7 +30,7 @@ class ModelSpec:
 
     name: str
     weight: str
-    builder: Callable[[str], torch.nn.Module]
+    builder: Callable[[str, str], torch.nn.Module]
     input_size: Tuple[int, int]
     expects_list_inputs: bool = False
 
@@ -41,13 +41,13 @@ def _load_ultralytics_model(weight: str, device: str) -> torch.nn.Module:
     return model
 
 
-def _load_faster_rcnn(device: str) -> torch.nn.Module:
+def _load_faster_rcnn(weight: str, device: str) -> torch.nn.Module:
     model = fasterrcnn_resnet50_fpn(weights=FasterRCNN_ResNet50_FPN_Weights.DEFAULT)
     model.to(device)
     return model
 
 
-def _load_ssd_mobilenet(device: str) -> torch.nn.Module:
+def _load_ssd_mobilenet(weight: str, device: str) -> torch.nn.Module:
     model = ssdlite320_mobilenet_v3_large(
         weights=SSDLite320_MobileNet_V3_Large_Weights.DEFAULT
     )
@@ -113,7 +113,7 @@ def _format_rows(rows: Iterable[Tuple[str, float, float]]) -> str:
 
 
 def _profile_model(spec: ModelSpec, device: str, img_size: Tuple[int, int]) -> Tuple[float, float]:
-    model = spec.builder(device)
+    model = spec.builder(spec.weight, device)
     model.eval()
 
     dummy = torch.randn(1, 3, img_size[0], img_size[1], device=device)
